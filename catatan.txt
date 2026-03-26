@@ -1,0 +1,67 @@
+nanti coba generate cityseeder lagi
+php artisan db:seed --class=CitiesTableSeeder  
+
+php artisan serve
+php artisan serve --port=8080
+
+ php artisan make:request UserRequest
+
+bisa buat db melalui terminal
+PS C:\kodemastery\POS_laravel> php artisan migrate
+
+   WARN  The database 'db_pos' does not exist on the 'mysql' connection.  
+
+  Would you like to create it? (yes/no) [yes]
+❯ 
+
+install inertia:
+composer require inertiajs/inertia-laravel:1.0.0
+
+composer require inertiajs/inertia-laravel:1.0.0 
+npm install --save-dev @vitejs/plugin-react@^4.3.4
+
+ npm install sweetalert2@^11.17.2  ini kalau pakai versi
+  npm install recharts otomatis yg terbaru
+
+seoerti flutter pub add lagi:
+ composer require midtrans/midtrans-php:^2.6
+
+buat model, migration, dan controller sekaligus
+  php artisan make:model Province -mc
+
+  php artisan make:resource UserResource
+
+  install spatie untuk hak akses user
+
+   php artisan db:seed --class=RolesTableSeeder      
+  > php artisan make:seeder PermissionsTableSeeder
+
+  # Clear semua cache sekaligus (ketika ui tidak mau update)
+php artisan optimize:clear
+
+# Atau clear satu per satu:
+php artisan cache:clear          # Clear application cache
+php artisan config:clear         # Clear config cache
+php artisan route:clear          # Clear route cache
+php artisan view:clear           # Clear compiled views
+php artisan event:clear          # Clear event cache
+
+PS C:\kodemastery\POS_laravel> php artisan storage:link
+
+INFO  The [C:\kodemastery\POS_laravel\public\storage] link has been connected to [C:\kodemastery\POS_laravel\storage\app/public].
+
+admin@gmail.com 
+password
+
+
+fauls@gmail.com
+fauls
+faul12345
+
+npm install bootstrap @popperjs/core
+
+composer.json => package untuk laravel
+package.json => packae untuk react
+
+composer dump-autoload
+php artisan optimize:clear

@@ -1,0 +1,68 @@
+PS C:\kodemastery\POS_laravel> php artisan db:seed --class=CitiesTableSeeder       
+
+   INFO  Seeding database.  
+
+array:9 [
+  0 => array:2 [
+    "id" => 1
+    "name" => "MATARAM"
+  ]
+  1 => array:2 [
+    "id" => 2
+    "name" => "BIMA"
+  ]
+  2 => array:2 [
+    "id" => 3
+    "name" => "DOMPU"
+  ]
+  3 => array:2 [
+    "id" => 4
+    "name" => "LOMBOK TENGAH"
+  ]
+  4 => array:2 [
+    "id" => 5
+    "name" => "LOMBOK TIMUR"
+  ]
+  5 => array:2 [
+    "id" => 7
+    "name" => "SUMBAWA"
+  ]
+  6 => array:2 [
+    "id" => 8
+    "name" => "LOMBOK BARAT"
+  ]
+  7 => array:2 [
+    "id" => 9
+    "name" => "LOMBOK UTARA"
+  ]
+  8 => array:2 [
+    "id" => 10
+    "name" => "SUMBAWA BARAT"
+  ]
+] // database\seeders\CitiesTableSeeder.php:55
+PS C:\kodemastery\POS_laravel>
+
+
+
+
+
+
+
+
+
+
+
+
+  6 => array:2 [
+    "id" => 8
+    "name" => "LOMBOK BARAT"
+  ]
+  7 => array:2 [
+    "id" => 9
+    "name" => "LOMBOK UTARA"
+  ]
+  8 => array:2 [
+    "id" => 10
+    "name" => "SUMBAWA BARAT"
+  ]
+] // database\seeders\CitiesTableSeeder.php:55
