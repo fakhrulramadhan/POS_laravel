@@ -53,7 +53,7 @@ export default function RoleEdit() {
             <AdminLayout>
                 <div className="row mt-4">
                     <div className="col-12">
-                        <div className="card border-0 rounded shadow border-top-success">
+                        <div className="card shadow-sm border-top-success">
                             <div className="card-header">
                                 <strong><i className="bi bi-shield-fill-check"></i>Edit Role</strong>
                             </div>

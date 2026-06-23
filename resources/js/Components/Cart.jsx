@@ -1,85 +1,45 @@
 import React from "react";
-import DataTable from "react-data-table-component";
 import { formatRupiah } from "../utils/rupiah";
 
 const Cart = ({ cartItems, onDelete}) => {
-
-    // buat judul kolom datatable
-    const columns = [
-        {
-            name: "No",
-            selector: (row, index) => index + 1,
-            width: "70px"
-        },
-        {
-            name: "Product Item",
-            selector: (row) => row.name,
-            sortable: true
-        },
-        {
-            name: "Qty",
-            selector: (row) => row.quantity,
-            sortable: true,
-            right: true
-        },
-        {
-            name: "Total",
-            selector: (row) => formatRupiah(row.total_price),
-            sortable: true,
-            right: true
-        },
-        {
-            name: "Actions",
-            cell: (row) => (
-                <button className="btn btn-danger btn-sm"
-                onClick={() => onDelete(row.id)}
-                >
-                    <i className="bi bi-trash"></i> Delete
-                </button>
-            ),
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-        }
-    ];
-
-    // const (nilai variabelnya tetap)
-    const customStyles = {
-        headCells: {
-            style: {
-                fontWeight: 'bold',
-                fontSize: '16px'
-            }
-        },
-        cells: {
-            style: {
-                fontSize: '14px'
-            }
-        }
-    };
-
     return (
-        <div className="card shadow p-3">
-            <div className="card-body">
-                <h5 className="card-title mb-4">Shopping Cart</h5>
-                <div
-                style={{ 
-                    maxHeight: "150px",
-                    overflowY: "auto"
-                 }}
-                >
-                    <DataTable
-                    columns={columns}
-                    data={cartItems}
-                    pagination
-                    highlightOnHover
-                    striped
-                    noHeader
-                    responsive
-                    customStyles={customStyles}
-                    />
-                </div>
-            </div>
+        <div className="table-responsive">
+            <table className="table align-middle mb-0" style={{fontSize:'0.85rem'}}>
+                <thead style={{background:'#f8f9fc'}}>
+                    <tr>
+                        <th style={{width:'40px'}}>#</th>
+                        <th>Item</th>
+                        <th className="text-end">Qty</th>
+                        <th className="text-end">Total</th>
+                        <th className="text-center" style={{width:'60px'}}></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {cartItems.length > 0 ? (
+                        cartItems.map((item, index) => (
+                            <tr key={item.id}>
+                                <td className="text-muted">{index + 1}</td>
+                                <td className="fw-semibold">{item.name}</td>
+                                <td className="text-end">{item.quantity}</td>
+                                <td className="text-end fw-semibold">{formatRupiah(item.total_price)}</td>
+                                <td className="text-center">
+                                    <button className="btn btn-sm p-1 text-danger border-0 bg-transparent"
+                                        onClick={() => onDelete(item.id)}
+                                        title="Hapus"
+                                    >
+                                        <i className="bi bi-x-circle-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr><td colSpan="5" className="text-center text-muted py-4">
+                            <i className="bi bi-cart-x d-block mb-2" style={{fontSize:'1.5rem'}}></i>
+                            Keranjang masih kosong
+                        </td></tr>
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 }

@@ -53,7 +53,7 @@ export default function RoleCreate() {
         <AdminLayout>
             <div className="row mt-4">
                 <div className="col-12">
-                    <div className="card border-0 rounded shadow border-top-success">
+                    <div className="card shadow-sm border-top-success">
                         <div className="card-header">
                             <span className="font-weight-bold">
                                 <i className="bi bi-shield fill-plus"></i> Add New Role

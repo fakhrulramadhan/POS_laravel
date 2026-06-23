@@ -8,22 +8,29 @@ const Sidebar = () => {
 
     return (
         <nav
-            className="navbar sidebar navbar-expand-xl navbar-light bg-dark text-white"
+            className="navbar sidebar navbar-expand-xl navbar-dark bg-dark"
             style={{ overflowY: "auto" }}
         >
-            <div className="d-flex flex-column align-items-center p-3">
+            <div className="d-flex flex-column align-items-center p-3 w-100">
                 {/* Logo / Brand */}
                 <Link className="navbar-brand text-center" href="/">
-                    <span className="navbar-brand-item h5 text-primary mb-0">
-                        EasyPOS
-                    </span>
+                    <div className="d-flex align-items-center gap-2">
+                        <div className="bg-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: 40, height: 40 }}>
+                            <i className="bi bi-shop text-white fs-5"></i>
+                        </div>
+                        <span className="navbar-brand-item h5 text-white mb-0 fw-bold">
+                            AkuPos
+                        </span>
+                    </div>
                 </Link>
 
                 {/* Nama Store */}
                 {currentStore && (
-                    <div className="d-flex flex-column align-items-center justify-content-center text-white w-100 rounded-3 shadow">
-                        <i className="bi bi-shop-window fs-3 mb-2"></i>
-                        <span className="fs-5 fw-semibold">Store: {currentStore.name}</span>
+                    <div className="d-flex align-items-center justify-content-center text-white w-100 rounded-3 p-2 mt-2"
+                        style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
+                        <i className="bi bi-shop-window fs-6 me-2 text-primary"></i>
+                        <span className="small fw-semibold">{currentStore.name}</span>
                     </div>
                 )}
             </div>
@@ -34,10 +41,10 @@ const Sidebar = () => {
                 tabIndex="-1"
                 id="offcanvasSidebar"
             >
-                <div className="offcanvas-body  sidebar-content d-flex flex-column">
-                    <ul className="navbar-nav flex-column " id="navbar-sidebar">
+                <div className="offcanvas-body sidebar-content d-flex flex-column pt-0">
+                    <ul className="navbar-nav flex-column" id="navbar-sidebar">
                         {/* Dashboard Section */}
-                        <li className="nav-item mt-3 mb-1 text-muted">Dashboard</li>
+                        <li className="nav-item mt-2 mb-1 text-muted small px-3">Dashboard</li>
                         {hasAnyPermission(["dashboard.index"]) && (
                             <NavItem
                                 href="/admin/dashboard"
@@ -49,9 +56,7 @@ const Sidebar = () => {
                         {/* Management User Section */}
                         {hasAnyPermission(["roles.index"]) && (
                             <>
-
-                                <li className="nav-item mt-3 mb-1  text-muted">Management User</li>
-
+                                <li className="nav-item mt-2 mb-1 text-muted small px-3">Management User</li>
                                 <NavItem
                                     href="/admin/roles"
                                     icon="bi-shield-lock"
@@ -70,8 +75,7 @@ const Sidebar = () => {
                         {/* Data Management Section */}
                         {hasAnyPermission(["warehouses.index"]) && (
                             <>
-
-                                <li className="nav-item mt-3 mb-1 text-muted">Data Management</li>
+                                <li className="nav-item mt-2 mb-1 text-muted small px-3">Data Management</li>
                                 <NavItem
                                     href="/admin/warehouses"
                                     icon="bi-building"
@@ -143,7 +147,7 @@ const Sidebar = () => {
                         {/* Transactions Section */}
                         {hasAnyPermission(["transactions.index"]) && (
                             <>
-                                <li className="nav-item mt-3 mb-1 text-muted">Transactions</li>
+                                <li className="nav-item mt-2 mb-1 text-muted small px-3">Transactions</li>
                                 {hasAnyPermission(["transactions.index"]) && (
                                     <NavItem
                                         href="/admin/sales"
@@ -156,7 +160,7 @@ const Sidebar = () => {
                         {/* Reports Section */}
                         {hasAnyPermission(["reports.index"]) && (
                             <>
-                                <li className="nav-item mt-3 mb-1 text-muted">Reports</li>
+                                <li className="nav-item mt-2 mb-1 text-muted small px-3">Reports</li>
                                 <NavItem
                                     href="/admin/report"
                                     icon="bi-clipboard-data"

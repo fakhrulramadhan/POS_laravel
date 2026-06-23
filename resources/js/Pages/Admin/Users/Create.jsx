@@ -37,13 +37,13 @@ export default function UserCreate() {
     return (
         <>
             <Head>
-                <title>Create - EasyPOS</title>
+                <title>Create - AkuPos</title>
             </Head>
             <AdminLayout>
                 <div className="container mt-4">
                     <div className="row justify-content-center">
                         <div className="col-md-8 col-lg-6">
-                            <div className="card border-0 rounded shadow-sm border-top-success">
+                            <div className="card shadow-sm border-top-success">
                                 <div className="card-header d-flex justify-content-between align-items-center">
                                     <button
                                         onClick={() => window.history.back()}

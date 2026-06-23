@@ -1,101 +1,51 @@
-import React from "react";
-
 import { Head, useForm, usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
 import AdminLayout from "../../../Layouts/AdminLayout";
 
-
 export default function CategoryEdit() {
-    
     const { category } = usePage().props;
-    const { data, setData, put, processing, errors } = useForm({
-        name: category.name || '',
-        description: category.description || ''
-    });
-    
+    const { data, setData, put, processing, errors } = useForm({ name: category.name || '', description: category.description || '' });
     const handleSubmit = (e) => {
         e.preventDefault();
-
         put(`/admin/categories/${category.id}`, {
-            onSuccess: () => {
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Category updated Successfully!',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }
+            onSuccess: () => { Swal.fire({ title: 'Success!', text: 'Category updated Successfully!', icon: 'success', showConfirmButton: false, timer: 1500 }); }
         });
     };
-
+    const handleBack = () => window.history.back();
     return (
         <>
-            <Head>
-                <title>Edit Category - EasyPOS</title>
-            </Head>
+            <Head><title>Edit Category - AkuPos</title></Head>
             <AdminLayout>
-                <div className="d-flex justify-content-center mt-5">
-                    <div className="col-6">
-                        <div className="card border rounded border-top-success">
-                            <div className="card-header">
-                                <span className="font-weight-bold">
-                                    <i className="bi bi-folder-fill"></i> Edit Category
-                                </span>
+                <div className="form-card">
+                    <div className="form-card-header">
+                        <button onClick={handleBack} className="back-btn"><i className="bi bi-arrow-left"></i></button>
+                        <h6><i className="bi bi-folder-fill me-2"></i>Edit Kategori</h6>
+                        <div style={{width:'36px'}}></div>
+                    </div>
+                    <div className="form-card-body">
+                        <form onSubmit={handleSubmit}>
+                            <div className="row g-4">
+                                <div className="col-md-6">
+                                    <label className="form-label">Nama Kategori</label>
+                                    <input type="text" className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                                        placeholder="Masukkan nama kategori" value={data.name}
+                                        onChange={e => setData('name', e.target.value)} />
+                                    {errors.name && <div className="text-danger small mt-1">{errors.name}</div>}
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="form-label">Deskripsi</label>
+                                    <input type="text" className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                                        placeholder="Masukkan deskripsi" value={data.description}
+                                        onChange={e => setData('description', e.target.value)} />
+                                    {errors.description && <div className="text-danger small mt-1">{errors.description}</div>}
+                                </div>
                             </div>
-
-                            <div className="card-body">
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">Category Name</label>
-                                        <input type="text"
-                                            name="name"
-                                            className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                                            placeholder="Enter Category Name"
-                                            value={data.name}
-                                            onChange={e => setData('name', e.target.value)}
-                                        />
-                                        {errors.name && <div className="alert  alert-danger">{errors.name}</div> }
-                                    </div>
-
-                                    {/* deskripsi, jarak spasi ke bawah 3 */}
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">Description</label>
-                                        <textarea name="description" 
-                                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                                        placeholder="Enter Description (Optional)"
-                                        value={data.description}
-                                        onChange={e => setData('description', e.target.value)}
-                                        />
-                                        {errors.description && <div className="alert alert-danger">
-                                            {errors.description}
-                                        </div> }
-                                    </div>
-
-                                    {/* submit button */}
-                                    <div className="d-flex justify-content-end">
-                                        <button type="submit" className="btn btn-success me-2" disabled={processing}>
-                                            {processing ? (
-                                                <>
-                                                    <div className="spinner-border spinner-border-sm text-light me-2" role="status">
-                                                        <span className="visually-hidden">Loading...</span>
-                                                    </div>
-                                                    loading....
-                                                </>
-                                            )
-                                            
-                                            :
-                                            (
-                                                <>
-                                                    <i className="fa fa-save"></i> Save Changes...
-                                                </>
-                                            )
-                                        }
-                                        </button>
-                                    </div>
-                                </form>
+                            <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                                <button type="submit" className="btn btn-primary px-4" disabled={processing}>
+                                    {processing ? (<><span className="spinner-border spinner-border-sm me-2"></span>Menyimpan...</>) : (<><i className="bi bi-check-lg me-1"></i>Simpan Perubahan</>)}
+                                </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </AdminLayout>

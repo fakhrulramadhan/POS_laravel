@@ -3,133 +3,67 @@ import Swal from "sweetalert2";
 import AdminLayout from "../../../Layouts/AdminLayout";
 import hasAnyPermission from "../../../utils/hasAnyPermission";
 import Pagination from "../../../Components/Pagination";
-export default function Dashboard() {
 
+export default function RolesIndex() {
     const { roles } = usePage().props;
-
     const handleDelete = (id) => {
         Swal.fire({
-            title: "Apakah Anda Yakin?",
-            text: "Data ini akan dihapus secara permanen!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, hapus!"
+            title: "Apakah Anda Yakin?", text: "Data ini akan dihapus secara permanen!", icon: "warning",
+            showCancelButton: true, confirmButtonColor: "#3085d6", cancelButtonColor: "#d33", confirmButtonText: "Ya, hapus!"
         }).then((result) => {
-            if (result.isConfirmed) {
-                router.delete(`/admin/roles/${id}`, {
-                    onSuccess: () => {
-                        Swal.fire("Dihapus!", "Data telah dihapus", "success");
-                    }
-                });
-            }
+            if (result.isConfirmed) { router.delete(`/admin/roles/${id}`, { onSuccess: () => { Swal.fire("Dihapus!", "Data telah dihapus", "success"); } }); }
         });
     };
-
     return (
         <>
-            <Head>
-                <title>Create Roles - EasyPOS</title>
-            </Head>
+            <Head><title>Roles - AkuPos</title></Head>
             <AdminLayout>
-                 <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb">
-                        <li className="breadcrumb-item">
-                            <Link href="/admin">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active"
-                            aria-current="page"
-                        >Users</li>
-                    </ol>
-                 </nav>
-                 <div className="row mb-3">
-                    <div className="col-md-12">
-                        <h3 className="font-weight-bold">
-                            <i className="bi bi-shield lock"></i>Roles
-                        </h3>
+                <div className="page-header-bar">
+                    <div className="header-left">
+                        <div className="header-icon"><i className="bi bi-shield-lock"></i></div>
+                        <div><h5>Roles</h5><p className="header-sub">Kelola hak akses pengguna</p></div>
                     </div>
-                 </div>
-                 <div className="row mb-3">
-                    <div className="col-md-12">
-                       <div className="d-flex justify-content-between align-items-center">
-                        {hasAnyPermission(["roles.index"]) && (
-                            <Link
-                                href="/admin/roles/create"
-                                className="btn btn-success"
-                            >
-                                <i className="bi bi-plus-circle-fill me-2"></i>
-                                Add Role
-                            </Link>
-                        )}
-                       </div>
+                    <div className="header-actions">
+                        {hasAnyPermission(["roles.create"]) && (<Link href="/admin/roles/create" className="btn btn-primary"><i className="bi bi-plus-lg me-1"></i> Tambah</Link>)}
                     </div>
-                 </div>
-
-                 <div className="card border rounded">
-                    <div className="card-body p-0">
-                        {/* jarak atas bawah kiri kanan 4 */}
-                        <div className="table-responsive p-4">
-                            <table className="table align-middle">
-                                <thead className="table-light">
-                                    <tr>
-                                        {/* bikin kolom, teksnya di tengah */}
-                                        <th scope="col" className="text-center">No,</th>
-                                        <th scope="col">Role Name</th>
-                                        <th scope="col">Permissions</th>
-                                        <th scope="col" className="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {roles.data.map((role, index) => (
-                                        <tr key={role.id}>
-                                            <td className="text-center">
-                                                {index + 1 + (roles.current_page - 1) * roles.per_page}
-                                            </td>
-                                            <td>{role.name}</td>
-                                            <td>
-                                                {/* berupa badge (pita) */}
-                                                <div className="d-flex flex-wrap gap-1">
-                                                    {role.permissions.map((permission, i) => (
-                                                        <span key={i} className="badge bg-success text-white badge-lg">
-                                                            {permission.name}
-                                                        </span>
-                                                    ))}
+                </div>
+                <div className="table-card">
+                    <div className="table-card-header"><h6><i className="bi bi-table me-2"></i>Daftar Role</h6><span>{roles.data.length} data</span></div>
+                    <div className="table-wrap">
+                        <table className="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th className="text-center" style={{width:'60px'}}>No</th>
+                                    <th>Nama Role</th>
+                                    <th>Permissions</th>
+                                    <th className="text-center" style={{width:'160px'}}>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {roles.data.map((role, index) => (
+                                    <tr key={role.id}>
+                                        <td className="text-center text-muted">{index + 1 + (roles.current_page - 1) * roles.per_page}</td>
+                                        <td className="fw-semibold">{role.name}</td>
+                                        <td><div className="d-flex flex-wrap gap-1">{role.permissions.map((perm, i) => (<span key={i} className="badge bg-primary bg-opacity-10 text-primary">{perm.name}</span>))}</div></td>
+                                        <td className="text-center">
+                                            {role.name !== "admin" && (
+                                                <div className="d-flex gap-1 justify-content-center">
+                                                    {hasAnyPermission(["roles.edit"]) && (<Link href={`/admin/roles/${role.id}/edit`} className="btn btn-action btn-action-edit"><i className="bi bi-pencil-fill me-1"></i>Edit</Link>)}
+                                                    {hasAnyPermission(["roles.delete"]) && (<button className="btn btn-action btn-action-delete" onClick={() => handleDelete(role.id)}><i className="bi bi-trash-fill me-1"></i>Hapus</button>)}
                                                 </div>
-                                            </td>
-                                            <td className="text-center">
-                                                {/* jika rolenya admin, maka tidak bisa edit izin hak akses nya */}
-                                                {/* role.name == "admin" */}
-                                                {role.name !== "admin" && (
-                                                    <>
-                                                    {hasAnyPermission(["roles.edit"]) && (
-                                                        <Link href={`/admin/roles/${role.id}/edit`}
-                                                        className="btn btn-primary btn-md me-2"
-                                                        >
-                                                            <i className="bi bi-pencil"></i>{"  "}
-                                                            Edit
-                                                        </Link>
-                                                    )}
-
-                                                    {hasAnyPermission(["roles.delete"]) && (
-                                                        <button onClick={() => handleDelete(role.id)}
-                                                        className="btn btn-danger btn-md"
-                                                        >
-                                                            <i className="bi bi-trash"></i>{" "} Delete
-                                                        </button>
-                                                    )}
-                                                    </>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <Pagination links={roles.links}/>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                 </div>
+                    <div className="table-footer"><Pagination links={roles.links} /></div>
+                </div>
             </AdminLayout>
         </>
     );
 }
+
+
+

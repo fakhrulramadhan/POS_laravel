@@ -90,11 +90,11 @@ const ShowStockOpname = () => {
                 {/* Data Table */}
                 <div className="row">
                     <div className="col-12">
-                        <div className="card border rounded">
+                        <div className="card shadow-sm">
                             <div className="card-body p-0">
                                 <div className="table-responsive p-4">
                                     <table className="table align-middle table-hover">
-                                        <thead className="bg-light text-white">
+                                        <thead>
                                             <tr>
                                                 <th className="text-center">No. </th>
                                                 <th>Product Name</th>

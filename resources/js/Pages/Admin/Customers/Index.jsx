@@ -4,184 +4,83 @@ import Swal from "sweetalert2";
 import AdminLayout from "../../../Layouts/AdminLayout";
 import hasAnyPermission from "../../../utils/hasAnyPermission";
 
-
 export default function CustomerIndex() {
-    
     const { customers } = usePage().props;
-    const [filterText,  setFilterText] = useState("");
-
-    // filter customers based on search input
+    const [filterText, setFilterText] = useState("");
     const filteredCustomers = customers.data.filter(
-        (customer) => (customer.name && customer.name.toLowerCase()
-                .includes(filterText.toLowerCase())) ||
+        (customer) => (customer.name && customer.name.toLowerCase().includes(filterText.toLowerCase())) ||
         (customer.phone && customer.phone.toLowerCase().includes(filterText.toLowerCase()))
     );
-
-    // utk delete based id
     const handleDelete = (id) => {
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: 'Yes, delete it!'
+            title: "Are you sure?", text: "You won't be able to revert this", icon: "warning",
+            showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: "#3085d6", confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
-
             if (result.isConfirmed) {
-                // panggil hapus route
                 router.delete(`/admin/customers/${id}`, {
-                    onSuccess: () => {
-                        Swal.fire(
-                            "Deleted!",
-                            "Customer has been deleted",
-                            "success"
-                        );
-
-                        // refresh halaman atau update state
-                        window.location.reload();
-                    },
-
-                    onError: () => {
-                        Swal.fire(
-                            "Error!",
-                            "There was a problem deleting the customers.",
-                            "error"
-                        );
-                    }
+                    onSuccess: () => { Swal.fire("Deleted!", "Customer has been deleted", "success"); window.location.reload(); },
+                    onError: () => { Swal.fire("Error!", "There was a problem deleting the customers.", "error"); }
                 });
             }
         });
     };
-
     return (
         <>
-            <Head>
-                <title>Customers - EasyPOS</title>
-            </Head>
+            <Head><title>Customers - AkuPos</title></Head>
             <AdminLayout>
-                <nav aria-label="breadcrumb">
-                    <ul className="breadcrumb">
-                        <li className="breadcrumb-item">
-                            <Link href="/admin">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active"
-                            aria-current="page"
-                        >Customers</li>
-                    </ul>
-                </nav>
-                <div className="row mb-2">
-                    <div className="col-md-12">
-                        <h3 className="font-weight-bold">
-                            <i className="bi bi-person"></i> Customers
-                        </h3>
+                <div className="page-header-bar">
+                    <div className="header-left">
+                        <div className="header-icon"><i className="bi bi-people"></i></div>
+                        <div><h5>Pelanggan</h5><p className="header-sub">Kelola data pelanggan</p></div>
+                    </div>
+                    <div className="header-actions">
+                        {hasAnyPermission(["customers.create"]) && (
+                            <Link href="/admin/customers/create" className="btn btn-primary"><i className="bi bi-plus-lg me-1"></i> Tambah</Link>
+                        )}
                     </div>
                 </div>
-                <div className="row mb-3">
-                    <div className="col-md-12">
-                        <div className="d-flex justify-content-center align-items-center">
-                            <input type="text"
-                            className="form-control me-2 w-25"
-                            placeholder="Search by Name or Phone"
-                            value={filterText}
-                            onChange={(e) => setFilterText(e.target.value)}
-                            />
-
-                            {/* jika user punya izin create customer, tampilkan button add */}
-                            {hasAnyPermission(["customers.create"]) && (
-                                <Link
-                                    href="/admin/customers/create"
-                                    className="btn btn-success"
-                                >
-                                    <i className="bi bi-plus-circle-fill me-2">
-                                        Add Customer
-                                    </i>
-                                </Link>
-                            )}
-                        </div>
+                <div className="toolbar-bar">
+                    <div className="search-wrapper">
+                        <i className="bi bi-search"></i>
+                        <input type="text" className="form-control" placeholder="Cari pelanggan..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card border rounded">
-                            <div className="card-body p-0">
-                                <div className="table-responsive p-0">
-                                   <table className="table align-middle table-hover">
-                                      <thead className="bg-light text-white">
-                                        <tr>
-                                            <th className="text-center">No.</th> 
-                                            <th>Name</th> 
-                                            <th>Phone</th>
-                                            <th>Address</th>  
-                                            <th>Gender</th>
-                                            <th className="text-center">Actions</th>
-                                        </tr>  
-                                      </thead>
-                                      <tbody>
-                                        {filteredCustomers.length > 0 ? (
-                                            filteredCustomers.map((customer, index) => (
-                                                <tr key={customer.id}>
-                                                    <td className="text-center">
-                                                        {index + 1 + (customers.current_page - 1) * customers.per_page}
-                                                    </td>
-                                                    <td>
-                                                        {customer.name || "No Name Available"}
-                                                    </td>
-                                                    <td>
-                                                        {customer.phone || "No phone available"}
-                                                    </td>
-                                                    <td>
-                                                        {customer.address || "No address available"}
-                                                    </td>
-                                                    {/* jika gender tipe datanya string, maka ambil karaker ke 0 nya jadiin huruf besar */}
-                                                    <td>
-                                                        <span className={`badge ${customer.gender === "active" ? "bg-success" : "bg-secondary"}}`}>
-
-                                                            {
-                                                                customer.gender && typeof customer.gender === "string" ? customer.gender.charAt(0).toUpperCase() + customer.gender.slice(1) : "N/A"
-                                                            }
-                                                        </span>
-                                                    </td>
-
-                                                    <td className="text-center">
-                                                        {hasAnyPermission(["customers.edit"]) && (
-                                                            <Link
-                                                                href={`/admin/customers/${customer.id}/edit`}
-                                                                className="btn btn-outline-primary btn-sm me-2 rounded"
-                                                            >
-                                                                <i className="bi bi-pencil-fill"></i>
-                                                                {" "} Edit
-                                                            </Link>
-                                                        )}
-                                                        {hasAnyPermission(["customers.delete"]) && (
-                                                            <button className="btn btn-outline-danger btn-sm rounded"
-                                                            onClick={() => handleDelete(customer.id)}
-                                                            >
-                                                                <i className="bi bi-trash-fill"></i>{" "} Delete
-                                                            </button>
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )
-                                        :
-                                        // lebar kolomnya 6, teksnya ketengahin
-                                        (
-                                            <tr>
-                                                <td colSpan="6"
-                                                className="text-center"
-                                                >
-                                                    No Customers Found
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                      </tbody>
-                                   </table>
-                                </div>
-                            </div>
-                        </div>
+                <div className="table-card">
+                    <div className="table-card-header"><h6><i className="bi bi-table me-2"></i>Daftar Pelanggan</h6><span>{filteredCustomers.length} data</span></div>
+                    <div className="table-wrap">
+                        <table className="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th className="text-center" style={{width:'60px'}}>No</th>
+                                    <th>Nama</th>
+                                    <th>Telepon</th>
+                                    <th>Alamat</th>
+                                    <th className="text-center">Gender</th>
+                                    <th className="text-center" style={{width:'180px'}}>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredCustomers.length > 0 ? (
+                                    filteredCustomers.map((customer, index) => (
+                                        <tr key={customer.id}>
+                                            <td className="text-center text-muted">{index + 1 + (customers.current_page - 1) * customers.per_page}</td>
+                                            <td className="fw-semibold">{customer.name || "-"}</td>
+                                            <td>{customer.phone || "-"}</td>
+                                            <td className="text-muted">{customer.address || "-"}</td>
+                                            <td className="text-center"><span className="badge" style={{background: customer.gender === 'pria' ? '#e3f2fd' : '#fce4ec', color: customer.gender === 'pria' ? '#1565c0' : '#c62828'}}>{customer.gender ? customer.gender.charAt(0).toUpperCase() + customer.gender.slice(1) : "-"}</span></td>
+                                            <td className="text-center">
+                                                <div className="d-flex gap-1 justify-content-center">
+                                                    {hasAnyPermission(["customers.edit"]) && (<Link href={`/admin/customers/${customer.id}/edit`} className="btn btn-action btn-action-edit"><i className="bi bi-pencil-fill me-1"></i>Edit</Link>)}
+                                                    {hasAnyPermission(["customers.delete"]) && (<button className="btn btn-action btn-action-delete" onClick={() => handleDelete(customer.id)}><i className="bi bi-trash-fill me-1"></i>Hapus</button>)}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr><td colSpan="6"><div className="empty-state"><i className="bi bi-people"></i><h6>Tidak ada pelanggan</h6><p>Belum ada data pelanggan</p></div></td></tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </AdminLayout>

@@ -1,200 +1,108 @@
-import { Deferred, Head, router, usePage } from "@inertiajs/react"
+import { Deferred, Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import AdminLayout from "../../../Layouts/AdminLayout";
 
 export default function ReportIndex() {
-
-    const {
-        transactions,
-        start_date = "",
-        end_date = "",
-        errors
-    } = usePage().props;
-
-    // state untuk menyimpan input tanggal (start date, end date)
+    const { transactions, start_date = "", end_date = "", errors } = usePage().props;
     const [startDate, setStartDate] = useState(start_date);
     const [endDate, setEndDate] = useState(end_date);
-
-    // ketika klik generate report, maka bawa request input start date dan end datenya juiga
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.get("/admin/report/generate", {
-            start_date: startDate,
-            end_date: endDate
-        });
+        router.get("/admin/report/generate", { start_date: startDate, end_date: endDate });
     };
-
-    // fungsi untuk menentukan warna badhe berdasarkan metode pembayaran
     const getPaymentMethodBadge = (method) => {
         switch (method.toLowerCase()) {
-            case "cash":
-                return "success"; // Hijau
-            case "online":
-                return "primary"; // Biru
-            default:
-                return "secondary"; // Abu-abu untuk metode lain
+            case "cash": return "bg-success bg-opacity-10 text-success";
+            case "online": return "bg-primary bg-opacity-10 text-primary";
+            default: return "bg-secondary bg-opacity-10 text-secondary";
         }
     };
-
     return (
         <>
-        <Head>
-            <title>Transaction Report - EasyPOS</title>
-        </Head>
-        
-        <AdminLayout>
-            <div className="container-fluid mt-4">
-                <h3 className="font-weight-bold mb-4">
-                    <i className="bi bi-graph-up"></i> Transaction Report
-                </h3>
-
-                <div className="row">
-                    {/* Kolom filter */}
-                    <div className="col-md-4 mb-4">
-                        <div className="card shadow">
-                            <div className="card-body">
-                                <h3 className="card-title">Filter Transactions</h3>
+            <Head><title>Transaction Report - AkuPos</title></Head>
+            <AdminLayout>
+                <div className="page-header-bar">
+                    <div className="header-left">
+                        <div className="header-icon"><i className="bi bi-graph-up"></i></div>
+                        <div><h5>Laporan Transaksi</h5><p className="header-sub">Generate laporan penjualan</p></div>
+                    </div>
+                </div>
+                <div className="row g-4">
+                    <div className="col-md-4">
+                        <div className="table-card">
+                            <div className="table-card-header"><h6><i className="bi bi-funnel me-2"></i>Filter</h6></div>
+                            <div className="p-4">
                                 <form onSubmit={handleSubmit}>
-                                    {/* start date */}
                                     <div className="mb-3">
-                                        <label htmlFor="start_date"
-                                        className="form-label px-2"
-                                        >
-                                            Start Date
-                                        </label>
-                                        <input type="date"
-                                        id="start_date"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        className="form-control"
-                                        required
-                                        />
-                                        {errors?.start_date && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.start_date}
-                                            </div>
-                                        )}
+                                        <label className="form-label fw-semibold">Dari Tanggal</label>
+                                        <input type="date" id="start_date" value={startDate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                            className="form-control" required />
+                                        {errors?.start_date && <div className="alert alert-danger mt-2">{errors.start_date}</div>}
                                     </div>
-
-                                    {/* End Date */}
                                     <div className="mb-3">
-                                        <label className="form-label px-2" htmlFor="end_date">
-                                            End Date
-                                        </label>
-                                        <input type="date"
-                                        id="end_date"
-                                        value={endDate}
-                                        onChange={(e) => setEndDate(e.target.value)}
-                                        className="form-control"
-                                        required
-                                        />
-                                        {errors?.end_date && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.end_date}
-                                            </div>
-                                        )}
+                                        <label className="form-label fw-semibold">Sampai Tanggal</label>
+                                        <input type="date" id="end_date" value={endDate}
+                                            onChange={(e) => setEndDate(e.target.value)}
+                                            className="form-control" required />
+                                        {errors?.end_date && <div className="alert alert-danger mt-2">{errors.end_date}</div>}
                                     </div>
-
-                                    <button type="submit" className="btn btn-primary w-100">
-                                        <i className="bi bi-file-bi-file-earmark-arrow-down"></i>{" "}
-                                        Generate Report
+                                    <button type="submit" className="btn btn-primary w-100 py-3">
+                                        <i className="bi bi-file-earmark-arrow-down me-2"></i>Generate Report
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
-
-                    {/* kolom transaksi, sisa lebar 8 kolom lagi */}
                     <div className="col-md-8">
-                        <div className="card shadow">
-                            <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                                <h5 className="mb-0 text-white">
-                                    <i className="bi bi-list-ul"></i>{" "}
-                                    Transaction List
-                                </h5>
-                                <span>
-                                    Total Transactions:{" "}
-                                    {transactions?.length ?? 0}
-                                </span>
+                        <div className="table-card">
+                            <div className="table-card-header">
+                                <h6><i className="bi bi-list-ul me-2"></i>Data Transaksi</h6>
+                                <span>{transactions?.length ?? 0} transaksi</span>
                             </div>
-
-                            <div className="card-body p-0">
-                                <div className="table-responsive p-4"
-                                    style={{ 
-                                        maxHeight: "600px",
-                                        overflowY: "auto",
-                                     }}
-                                >
-                                    <Deferred
-                                    data="transactions"
-                                    fallback={
-                                        <div className="text-center my-4">
-                                            <div className="spinner-border text-primary"
-                                            role="status"
-                                            >
-                                                <span className="visually-hidden">
-                                                    Loading....
-                                                </span>
-                                            </div>
-                                            <p>Loading Transactions....</p>
-                                        </div>
-                                    }
-                                    >
-                                        {transactions && transactions.length > 0 ? (
-                                            <table className="table align-middle table-hover">
-                                                <thead className="bg-light text-white">
-                                                    <tr>
-                                                        <th>Customer</th>
-                                                        <th>Transaction Date</th>
-                                                        <th>Payment Method</th>
-                                                        <th>Total Amount</th>
-                                                        <th>Status</th>
-                                                        <th>Quantity</th>
+                            <div className="table-wrap" style={{maxHeight:'500px', overflowY:'auto'}}>
+                                <Deferred data="transactions" fallback={
+                                    <div className="text-center py-5"><div className="spinner-border text-primary" role="status"><span className="visually-hidden">Loading...</span></div><p className="mt-2 text-muted">Memuat data...</p></div>
+                                }>
+                                    {transactions && transactions.length > 0 ? (
+                                        <table className="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pelanggan</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Metode</th>
+                                                    <th className="text-end">Total</th>
+                                                    <th className="text-center">Status</th>
+                                                    <th className="text-end">Qty</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {transactions.map((transaction) => (
+                                                    <tr key={transaction.id}>
+                                                        <td className="fw-semibold">{transaction.customer?.name || "Guest"}</td>
+                                                        <td className="text-muted">{new Date(transaction.transaction_date).toLocaleString('id-ID')}</td>
+                                                        <td><span className={`badge ${getPaymentMethodBadge(transaction.payment_method)}`}>{transaction.payment_method}</span></td>
+                                                        <td className="text-end fw-semibold">{Number(transaction.total_amount).toLocaleString('id-ID', { style: 'currency', currency: 'IDR'})}</td>
+                                                        <td className="text-center">
+                                                            <span className={`badge ${transaction.status === "success" ? "bg-success" : transaction.status === "pending" ? "bg-warning text-dark" : "bg-danger"}`}>{transaction.status}</span>
+                                                        </td>
+                                                        <td className="text-end">{transaction.total_quantity || 0}</td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {transactions.map((transaction) => (
-                                                        <tr key={transaction.id}>
-                                                            <td>
-                                                                {transaction.customer?.name || "Guest"}
-                                                            </td>
-                                                            <td>
-                                                                {new Date(transaction.transaction_date).toLocaleString('id-ID')}
-                                                            </td>
-                                                            <td>
-                                                                <span className={`badge bg-${getPaymentMethodBadge(transaction.payment_method)}`}>
-                                                                    {transaction.payment_method}
-                                                                </span>
-                                                            </td>
-                                                            <td className="text-end">
-                                                                {Number(transaction.total_amount).toLocaleString('id-ID', { style: 'currency', currency: 'IDR'})}
-                                                            </td>
-                                                            <td className="text-center">
-                                                                <span className={`badge bg-${transaction.status === "success" ? "success" : transaction.status === "pending" ? "warning" : "danger"}`}>
-                                                                    {transaction.status}
-                                                                </span>
-                                                            </td>
-                                                            <td className="text-end">
-                                                                {transaction.total_quantity || 0}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        )
-                                        :
-                                        (
-                                           <p className="text-center py-4">Transaksi tidak ditemukan.</p>
-                                        )
-                                    }    
-                                    </Deferred> 
-                                </div>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <div className="empty-state"><i className="bi bi-inbox"></i><h6>Tidak ada transaksi</h6><p>Pilih periode untuk melihat data</p></div>
+                                    )}
+                                </Deferred>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </AdminLayout>
+            </AdminLayout>
         </>
     );
 }
+
+
+

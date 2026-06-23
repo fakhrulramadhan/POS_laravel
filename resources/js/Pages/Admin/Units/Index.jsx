@@ -4,153 +4,70 @@ import AdminLayout from "../../../Layouts/AdminLayout";
 import Pagination from "../../../Components/Pagination";
 
 export default function UnitIndex() {
-    
-    const { units } = usePage().props; //didapat dari controller (jadikan sbg props)
-
+    const { units } = usePage().props;
     const handleDelete = (id) => {
         Swal.fire({
-            title: "Apakah anda yakin?",
-            text: "Anda tidak akan bisa membatalkan tindakan ini",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, hapus!",
+            title: "Apakah anda yakin?", text: "Anda tidak akan bisa membatalkan tindakan ini", icon: "warning",
+            showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6", confirmButtonText: "Ya, hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
                 router.delete(`/admin/units/${id}`, {
-                    // hanya muncul pesan flash pada saat sukses
-                    onSuccess: () => {
-                        Swal.fire("Dihapus", "Unit telah Dihapus.", "success");
-                    },
-                    onError: () => {
-                        Swal.fire(
-                            "Error!",
-                            "Terjadi masalah saat menghapus unit.",
-                            "error"
-                        );
-                    }
+                    onSuccess: () => { Swal.fire("Dihapus", "Unit telah Dihapus.", "success"); },
+                    onError: () => { Swal.fire("Error!", "Terjadi masalah saat menghapus unit.", "error"); }
                 });
             }
         });
     };
-
     return (
         <>
-            <Head>
-                <title>Units = EasyPOS</title>
-            </Head>
+            <Head><title>Units - AkuPos</title></Head>
             <AdminLayout>
-                {/* muncul teks kecil */}
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb">
-                        <li className="breadcrumb-item">
-                            <Link href="/admin">Dashboard</Link>
-                        </li>
-                        <li className="breadcrumb-item active"
-                            aria-current="page"
-                        >
-                            Units
-                        </li>
-                    </ol>
-                </nav>
-                <div className="row mb-3">
-                    <div className="col-md-12">
-                        <h3 className="font-weight-bold">
-                            <i className="bi bi-tags-fill"></i> Units
-                        </h3>
+                <div className="page-header-bar">
+                    <div className="header-left">
+                        <div className="header-icon"><i className="bi bi-rulers"></i></div>
+                        <div><h5>Unit</h5><p className="header-sub">Kelola satuan unit produk</p></div>
+                    </div>
+                    <div className="header-actions">
+                        <Link href="/admin/units/create" className="btn btn-primary"><i className="bi bi-plus-lg me-1"></i> Tambah</Link>
                     </div>
                 </div>
-
-                <div className="row mb-3">
-                    <div className="col-md-12">
-                        <div className="d-flex justify-content-end align-items-center">
-                            <Link
-                                href="/admin/units/create"
-                                className="btn btn-success"
-                            >
-                                <i className="bi bi-plus-circle-fill me-2"></i>
-                                Tambah Unit
-                            </Link>
-                        </div>
+                <div className="table-card">
+                    <div className="table-card-header"><h6><i className="bi bi-table me-2"></i>Daftar Unit</h6><span>{units.data.length} data</span></div>
+                    <div className="table-wrap">
+                        <table className="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th className="text-center" style={{width:'60px'}}>No</th>
+                                    <th>Nama Unit</th>
+                                    <th className="text-center" style={{width:'180px'}}>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {units.data.length > 0 ? (
+                                    units.data.map((unit, index) => (
+                                        <tr key={unit.id}>
+                                            <td className="text-center text-muted">{index + 1 + (units.current_page - 1) * units.per_page}</td>
+                                            <td className="fw-semibold">{unit.name || "-"}</td>
+                                            <td className="text-center">
+                                                <div className="d-flex gap-1 justify-content-center">
+                                                    <Link href={`/admin/units/${unit.id}/edit`} className="btn btn-action btn-action-edit"><i className="bi bi-pencil-fill me-1"></i>Edit</Link>
+                                                    <button className="btn btn-action btn-action-delete" onClick={() => handleDelete(unit.id)}><i className="bi bi-trash-fill me-1"></i>Hapus</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr><td colSpan="3"><div className="empty-state"><i className="bi bi-rulers"></i><h6>Tidak ada unit</h6><p>Belum ada data unit</p></div></td></tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
+                    <div className="table-footer"><Pagination links={units.links} /></div>
                 </div>
-
-                {/* tabel unit */}
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card shadow-sm border-0 rounded-3">
-                            <div className="card-body p-0">
-                                <div className="table-responsive p-4">
-                                    <table className="table align-middle table-hover">
-                                        <thead className="bg-light text-white">
-                                            <tr>
-                                                <th className="text-center">
-                                                    No.
-                                                </th>
-                                                <th>Nama</th>
-                                                <th className="text-center">
-                                                    Aksi
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        { units.data.length > 0 ? (
-                                            
-                                            units.data.map((unit, index) => (
-                                                <tr
-                                                    key={unit.id}
-                                                    className="hover-bg-light"
-                                                >
-                                                    <td className="text-center">
-                                                        {index + 1 + (units.current_page - 1) * units.per_page}
-                                                    </td>
-
-                                                    <td>
-                                                        { unit.name || "Nama tidak tersedia"}
-                                                    </td>
-                                                    <td className="text-center">
-                                                        <Link
-                                                        href={`/admin/units/${unit.id}/edit`}
-                                                        className="btn btn-outline-primary btn-sm me-2 rounded-2 shadow-sm"
-                                                        >
-                                                            <i className="bi bi-pencil-fill"></i>{" "} Edit
-                                                        </Link>
-                                                        <button
-                                                        className="btn btn-outline-danger btn-sm rounded-2 shadow-sm"
-                                                        onClick={() =>
-                                                            handleDelete(unit.id)
-                                                        }
-                                                        >
-                                                            <i className="bi bi-trash-fill"></i>{" "} Hapus
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )
-
-                                        : 
-                                        (
-                                            <tr>
-                                                <td
-                                                colSpan="3"
-                                                className="text-center"
-                                                >Tidak ada unit ditemukan</td>
-                                            </tr>
-                                        )
-                                            
-                                        }
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <Pagination links={units.links}></Pagination>{" "}
-                                {/* Komponen paginatiosn */}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </AdminLayout>
         </>
     );
 }
+
+
+

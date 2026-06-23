@@ -37,8 +37,8 @@ export default function Login() {
                     {/* sisi sebelah kiri */}
                     <div className="col-12 col-lg-6 d-md-flex align-items-center justify-content-center bg-primary bg-opacity-10 vh-lg-100">
                         <div className="p-3 p-lg-5 text-center">
-                            <img src="https://is3.cloudhost.id/kodemastery/pos.webp" alt="easyPOS"/>
-                            <h2 className="fw-bold">Welcome to easyPOS</h2>
+                            <img src="https://is3.cloudhost.id/kodemastery/pos.webp" alt="AkuPos"/>
+                            <h2 className="fw-bold">Welcome to AkuPos</h2>
                             <p className="mb-0 h6 fw-light">
                                 Everything you need!
                             </p>

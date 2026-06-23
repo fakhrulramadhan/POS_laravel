@@ -102,12 +102,12 @@ export default function ProductStockEdit() {
     return (
         <>
             <Head>
-                <title>Edit Product Stock - EasyPOS</title>
+                <title>Edit Product Stock - AkuPos</title>
             </Head>
             <AdminLayout>
                 <div className="d-flex justify-content-center mt-5">
                     <div className="col-md-6 col-12">
-                        <div className="card border-0 rounded shadow border-top-warning">
+                        <div className="card shadow-sm border-top-warning">
                             <div className="card-header text-center">
                                 <span className="font-weight-bold">
                                     <i className="bi bi-box-seam"></i> Edit Product Stock
@@ -240,7 +240,7 @@ export default function ProductStockEdit() {
                             : (
                             <div className="table-responsive p-4">
                                 <table className="table align-middle">
-                                    <thead className="table-light">
+                                    <thead>
                                         <tr>
                                             <th>Barcode</th>
                                             <th>Name</th>

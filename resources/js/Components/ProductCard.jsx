@@ -2,19 +2,13 @@ import React from "react";
 
 const ProductCard = ({ product, onSelect}) => {
     return (
-        <div className="card h-100 shadow mb-2"
-        style={{  cursor: 'pointer' }}
-        onClick={() => onSelect(product)}
+        <div className="product-item"
+            onClick={() => onSelect(product)}
         >
-            <img src={product.image} alt={product.name} className="card-img-top rounded-3"/>
-
-            <div className="card-body d-flex flex-column p-2">
-                <h6 className="text-truncate">
-                    {product.name}
-                </h6>
-                <p className="text-muted mt-auto">
-                    Rp{product.selling_price.toLocaleString()}
-                </p>
+            <img src={product.image} alt={product.name} />
+            <div className="product-info">
+                <h6>{product.name}</h6>
+                <small>Rp{product.selling_price.toLocaleString()}</small>
             </div>
         </div>
     );

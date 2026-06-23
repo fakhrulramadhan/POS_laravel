@@ -66,13 +66,13 @@ export default function SupplierCreate() {
     return (
         <>
           <Head>
-            <title>Create Supplier - EasyPOS</title>
+            <title>Create Supplier - AkuPos</title>
           </Head>
           <AdminLayout>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
                         <div className="col-md-8 col-lg-6">
-                            <div className="card border rounded shadow border-top-success">
+                            <div className="card shadow-sm border-top-success">
                                 <div className="card-header d-flex justify-content-between align-items-center">
                                     <button onClick={handleBack} className="btn btn-sm btn-secondary">
                                         <i className="fa fa-arrow-left"></i> Back

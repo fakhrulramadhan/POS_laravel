@@ -37,13 +37,13 @@ export default function CustomerEdit({customer}) {
     return (
         <>
             <Head>
-                <title>Edit Customer - EasyPOS</title>
+                <title>Edit Customer - AkuPos</title>
             </Head>
             <AdminLayout>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
                         <div className="col-md-8 col-lg-6">
-                            <div className="card border rounded shadow border-top-success">
+                            <div className="card shadow-sm border-top-success">
                                 <div className="card-header d-flex justify-content-between align-items-center">
                                     <button onClick={handleBack} className="btn btn-sm btn-secondary">
                                         <i className="fa fa-arrow-left"></i> Back

@@ -562,106 +562,64 @@ const Sales = () => {
 
     // bagian render (return)
     return (
-        <div className="container-fluid mt-4">
-            <div className="row gx-4">
-                {/* Bagian Kiri - Produk dan Kategori */}
-                <div className="col-md-6">
-                    <div className="card shadow mb-4">
-                        <div className="card-body">
-                            <div className="row mb-4">
-                                {/* Tombol Kembali */}
-                                <Link href="/admin/dashboard" className="btn btn-sm btn-secondary">
-                                    <i className="bi bi-arrow-left"></i> Back
-                                </Link>
+        <div className="sales-container container-fluid px-4">
+            {/* Header Bar */}
+            <div className="sales-header-bar">
+                <div className="sales-info">
+                    <div className="avatar"><i className="bi bi-cart-check"></i></div>
+                    <div>
+                        <h5>Transaksi Baru</h5>
+                        <small><i className="bi bi-person me-1"></i>Kasir: {auth.user.name}</small>
+                    </div>
+                </div>
+                <div className="sales-badge">
+                    <Link href="/admin/dashboard" className="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                        <i className="bi bi-arrow-left me-1"></i>Kembali
+                    </Link>
+                    <button className="btn btn-sm btn-outline-primary rounded-pill px-3 ms-2"
+                        onClick={() => setShowScanner(!showScanner)}>
+                        <i className="bi bi-camera me-1"></i> Scan
+                    </button>
+                </div>
+            </div>
 
-                                {/* Filter Kategori */}
-                                <div className="col-md-4">
-                                    <label className="form-label">Filter By Category</label>
-                                    <select className="form-select"
-                                    onChange={(e) =>
-                                        dispatch(setSelectedCategory(e.target.value))
-                                    }
-                                    value={state.selectedCategory}
-                                    >
-                                        <option value="">All Categories</option>
-                                        {categories.map((category) => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+            {/* Barcode Scanner */}
+            {showScanner && (
+                <div className="mb-3 p-3 bg-white rounded-3 border" style={{borderColor:'#f0f0f5'}}>
+                    <BarcodeScannerComponent width={300} height={200} onUpdate={handleBarcodeDetected} />
+                    <button className="btn btn-danger btn-sm mt-2" onClick={() => setShowScanner(false)}>
+                        <i className="bi bi-x-lg me-1"></i>Tutup Scanner
+                    </button>
+                </div>
+            )}
 
-                                {/* Pencarian Produk */}
-                                <div className="col-md-6">
-                                    <label className="form-label">Search Product</label>
-                                    <div className="mb-3">
-                                        <input 
-                                        id="search-product"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Search product by name or barcode"
-                                        value={state.searchTerm}
-                                        onChange={(e) => dispatch(setSearchTerm(e.target.value))}
-                                        ref={searchInputRef}
-                                       />
-                                    </div>
-                                    <button className="btn btn-primary"
-                                    onClick={() => setShowScanner(!showScanner)}
-                                    >
-                                        <i className="fas fa-camera"></i> Scanner
-                                    </button>
-
-                                    {/* button untuk membuka modal */}
-                                    <button type="button" className="btn btn-info ms-2"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    > Lihat Caranya </button>
-                                </div>
+            <div className="row g-3">
+                {/* Left Panel - Products */}
+                <div className="col-lg-5">
+                    <div className="sales-panel">
+                        <div className="panel-header">
+                            <h6><i className="bi bi-box me-2"></i>Produk</h6>
+                            <div className="d-flex gap-2">
+                                <select className="form-select" style={{width:'auto', fontSize:'0.8rem', padding:'4px 10px'}}
+                                    onChange={(e) => dispatch(setSelectedCategory(e.target.value))}
+                                    value={state.selectedCategory}>
+                                    <option value="">Semua</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
                             </div>
-
-                            <div className="modal fade" id="exampleModal" tabIndex={-1}
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h3 className="modal-title fs-5" id="exampleModalLabel">Modal title</h3>
-                                            <button type="button" className="btn-close" data-by-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <div className="step">
-                                                <p>Step 1: Unduh barcode yang terdapat pada tabel produk</p>
-                                                <p>Step 2: Klik tombol "Scan", kemudian kamera akan muncul. Arahkan kamera ke barcode yang sudah diunduh.</p>
-                                                <p>Step 3: Setelah barcode berhasil dipindai, nama produk yang dipindai akan muncul, dan produk tersebut otomatis akan ditambahkan ke halaman keranjang</p>
-                                                <p><strong>Catatan:</strong>Fitur ini digunakan untuk pengujian sebagai pengganti alat pemindai barcode</p>
-                                            </div>
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Save Changes</button>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div className="panel-body">
+                            <div className="mb-3 position-relative">
+                                <i className="bi bi-search position-absolute" style={{left:'14px', top:'12px', color:'#aaa'}}></i>
+                                <input type="text" className="form-control" placeholder="Cari produk..." 
+                                    style={{paddingLeft:'36px', borderRadius:'10px', background:'#f8f9fc', border:'1px solid #e8e8ee'}}
+                                    value={state.searchTerm}
+                                    onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+                                    ref={searchInputRef}
+                                />
                             </div>
-
-                            {/*  Komponen Barcode Scanner*/}
-                            {showScanner && (
-                                <div className="mb-4">
-                                    <BarcodeScannerComponent
-                                    width={300}
-                                    height={300}
-                                    onUpdate={handleBarcodeDetected}
-                                    />
-                                    <button
-                                    className="btn btn-danger w-100 mt-2"
-                                    onClick={() => setShowScanner(false)}
-                                    >
-                                        <i className="fas fa-times"></i> Cancel Scan
-                                    </button>
-                                </div>
-                            )}
-
-                            {/* Daftar Produk */}
                             <ProductList 
                                 products={state.filteredProducts}
                                 loading={state.loading}
@@ -669,97 +627,79 @@ const Sales = () => {
                             />
                         </div>
                     </div>
-
-                    {/* pemilih pelanggan */}
-                    <CustomerSelector
-                    customers={customers}
-                    selectedCustomer={state.selectedCustomer}
-                    onSelectCustomer={(value) => dispatch(setSelectedCustomer(value))}
-                    cashierName={auth.user.name}
-                   />
-
-                   {/* Pilih Produk dan kuantitas */}
-                    <div className="card shadow">
-                        <div className="card-body">
-                            <div className="row">
-                                {/* Kolom kiri: input Select Product dan Quantity */}
-                                <div className="col-md-8">
-                                    <label className="form-label">Select Product</label>
-                                    <div className="position-relative">
-                                        <input 
-                                        className="form-control bg-light pe-5"
-                                        type="text"
-                                        placeholder="Click to select product"
-                                        aria-label="Select Product"
-                                        value={state.selectedProduct?.name || ""}
-                                        readOnly
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#productModal"
-                                        />
-                                        <button
-                                        className="bg-transparent px-2 py-0 border-0 position-absolute top-50 end-0 translate-middle-y"
-                                        type="button"
-                                        data-bs-toggle='modal'
-                                        data-bs-target="#productModal"
-                                        >
-                                            <i className="fas fa-search fs-6 text-primary"></i>
-                                        </button>
-                                    </div>
-
-                                    <label className="form-label">Quantity</label>
-                                    <input type="number"
-                                    className="form-control"
-                                    value={state.quantity}
-                                    onChange={handleInputChange(setQuantity)}
-                                    min="1"
-                                    />
-                                </div>
-
-                                {/* kolom kanan: tombol add product */}
-                                <div className="col-md-4 d-flex align-items-end mt-3">
-                                    <button
-                                    id="add-product-button"
-                                    className="btn btn-success w-100 mt-md-0 py-md-6 btn-mobile-lg"
-                                    onClick={() => handleAddToCart()}
-                                    >
-                                        <i className="bi bi-cart-plus"></i> Add Product
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    
                 </div>
-                
-                {/* Bagian tengah - kerangang belanja */}
-                <div className="col-md-6">
-                    <div className="card shadow mb-4">
-                        <div className="card-body">
-                            <h5 className="card-title mb-4">Keranjang Belanja</h5>
-                            <Cart cartItems={state.cartItems} onDelete={handleDeleteProduct}/>
-                            <hr className="my-4"/>
-                            {/* Subtotal */}
-                            <div className="d-flex justify-content-between align-items-center">
-                                <label className="form-label mb-0">Sub Total</label>
-                                <h4 className="fw-bold mb-0">
-                                    {formatRupiah(state.subTotal)}
-                                </h4>
+
+                {/* Right Panel - Cart & Payment */}
+                <div className="col-lg-7">
+                    {/* Customer Selector */}
+                    <CustomerSelector
+                        customers={customers}
+                        selectedCustomer={state.selectedCustomer}
+                        onSelectCustomer={(value) => dispatch(setSelectedCustomer(value))}
+                        cashierName={auth.user.name}
+                    />
+
+                    {/* Product Selector Quick */}
+                    <div className="product-selector-card">
+                        <div className="ps-row">
+                            <div className="ps-field">
+                                <label>Pilih Produk</label>
+                                <div className="position-relative">
+                                    <input className="form-control" type="text" placeholder="Klik untuk memilih produk..."
+                                        value={state.selectedProduct?.name || ""} readOnly
+                                        data-bs-toggle="modal" data-bs-target="#productModal"
+                                        style={{cursor:'pointer', background:'#f8f9fc'}} />
+                                    <i className="bi bi-search position-absolute" style={{right:'14px', top:'50%', transform:'translateY(-50%)', color:'var(--bs-primary)'}}></i>
+                                </div>
+                            </div>
+                            <div className="ps-field" style={{maxWidth:'120px'}}>
+                                <label>Jumlah</label>
+                                <input type="number" className="form-control" value={state.quantity}
+                                    onChange={handleInputChange(setQuantity)} min="1" />
+                            </div>
+                            <div className="ps-field" style={{maxWidth:'100px', paddingTop:'24px'}}>
+                                <button className="btn btn-primary w-100" onClick={() => handleAddToCart()}>
+                                    <i className="bi bi-plus-lg"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                     {/* Bagian kanan - pembayaran */}
-                <PaymentSection 
-                    discount={state.discount}
-                    onDiscountChange={handleInputChange(setDiscount)}
-                    subTotal={state.subTotal}
-                    paymentMethod={state.paymentMethod}
-                    onPaymentMethodChange={(e) => dispatch(setPaymentMethod(e.target.value))}
-                    cash={state.cash}
-                    onCashChange={handleInputChange(setCash)}
-                    change={state.change}
-                    onProcessPayment={handleProcessPayment}
-                />
+
+                    <div className="row g-3">
+                        {/* Cart */}
+                        <div className="col-md-7">
+                            <div className="cart-panel">
+                                <div className="cart-header">
+                                    <h6><i className="bi bi-cart me-2"></i>Keranjang</h6>
+                                    <span className="cart-count">{state.cartItems.length} item</span>
+                                </div>
+                                <div className="cart-body" style={{maxHeight:'220px', overflowY:'auto'}}>
+                                    <Cart cartItems={state.cartItems} onDelete={handleDeleteProduct} />
+                                </div>
+                                <div className="cart-summary">
+                                    <div className="total-row">
+                                        <span>Sub Total</span>
+                                        <span className="total-value">{formatRupiah(state.subTotal)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Payment */}
+                        <div className="col-md-5">
+                            <PaymentSection 
+                                discount={state.discount}
+                                onDiscountChange={handleInputChange(setDiscount)}
+                                subTotal={state.subTotal}
+                                paymentMethod={state.paymentMethod}
+                                onPaymentMethodChange={(e) => dispatch(setPaymentMethod(e.target.value))}
+                                cash={state.cash}
+                                onCashChange={handleInputChange(setCash)}
+                                change={state.change}
+                                onProcessPayment={handleProcessPayment}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -824,3 +764,4 @@ const Sales = () => {
 }
 
 export default Sales;
+

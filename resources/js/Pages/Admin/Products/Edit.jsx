@@ -47,13 +47,13 @@ export default function ProductEdit() {
     return (
         <>
             <Head>
-                <title>Edit Product - EasyPOS</title>
+                <title>Edit Product - AkuPos</title>
             </Head>
 
             <AdminLayout>
                 <div className="row mt-4">
                     <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-primary">
+                        <div className="card shadow-sm border-top-primary">
                             <div className="card-header">
                                 <span className="font-weight-bold">
                                     <i className="fa fa-pencil-square"></i> Edit Product

@@ -1,16 +1,9 @@
 import Skeleton from "react-loading-skeleton";
 import ProductCard from "./ProductCard";
 
-
 const ProductList = ({ products, loading, onSelectProduct}) => {
-
     return (
-        <div className="row row-cols-2 row-cols-lg-3 g-3"
-        style={{ 
-            maxHeight: "350px",
-            overflowY: "auto",
-         }}
-        >
+        <div className="product-grid">
         { loading ? 
             Array.from({ length: 8 }).map((_, index) => (
                 <div className="col" key={index}>
@@ -19,14 +12,12 @@ const ProductList = ({ products, loading, onSelectProduct}) => {
             ))
             :
             products.map((product, index) => (
-                <div className="col" key={index}>
-                    <ProductCard 
+                <ProductCard 
+                    key={index}
                     product={product}
                     onSelect={onSelectProduct}
-                    />
-                </div>
+                />
             ))
-
         }
         </div>
     );

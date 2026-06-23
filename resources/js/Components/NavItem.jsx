@@ -10,9 +10,9 @@ const NavItem = ({href, icon, label, labelClass =  "", children}) => {
     return (
         <li className="nav-item">
             <a href={href}
-                className={`nav-link d-flex align-items-center text-white rounded ${isActive ? "bg-secondary" : ""}`}
+                className={`nav-link d-flex align-items-center rounded ${isActive ? "active" : ""}`}
             >
-                <i className={`bi ${icon} fa-fw me-2 ${labelClass}`}/>
+                <i className={`bi ${icon} fa-fw me-3 ${labelClass}`} style={{ fontSize: '1.1rem' }}/>
                 <span>{label}</span>
             </a>
             {children && <ul className="nav flex-column ms-3">{children}</ul>}

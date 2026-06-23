@@ -29,13 +29,13 @@ export default function UnitCreate() {
     return (
         <>
             <Head>
-                <title>Create Unit - EasyPOS</title>
+                <title>Create Unit - AkuPos</title>
             </Head>
             <AdminLayout>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
                         <div className="col-md-8 col-lg-6">
-                            <div className="card border rounded shadow border-top-success">
+                            <div className="card shadow-sm border-top-success">
                                 <div className="card-header d-flex justify-content-between align-items-center">
                                     <button
                                     onClick={() => window.history.back()}

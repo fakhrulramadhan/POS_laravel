@@ -43,7 +43,7 @@ export default function CustomerCreate() {
                 <div className="container-fluid">
                     <div className="row justify-content-center">
                         <div className="col-md-6 col-lg-6">
-                            <div className="card border rounded shadow border-top-success">
+                            <div className="card shadow-sm border-top-success">
                                 <div className="card-header d-flex justify-content-between align-items-center">
                                     <button
                                         onClick={handleBack}

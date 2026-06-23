@@ -36,12 +36,12 @@ export default function ProductsCreate() {
     return (
         <>
             <Head>
-                <title>Create Product - EasyPOS</title>
+                <title>Create Product - AkuPos</title>
             </Head>
             <AdminLayout>
                 <div className="row mt-4">
                     <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-success">
+                        <div className="card shadow-sm border-top-success">
                             <div className="card-header">
                                 <span className="font-weight-bold"><i className="bi bi-box-seam-fill"></i> Add New</span>
                             </div>

@@ -8,7 +8,7 @@ const Receipt = React.forwardRef(
                 <div className="bg-white border rounded shadow p-4 small" style={{ maxWidth: "350px" }}>
                     {/* Header Struk */}
                     <div className="text-center mb-3">
-                        <h3 className="mb-1 fw-bold">EasyPOS</h3>
+                        <h3 className="mb-1 fw-bold">AkuPos</h3>
                         <p className="mb-1">Jl. Raya No. 133, Sleman, Yogyakarta</p>
                         <p className="mb-1">Tel: (021) 12345678</p>
                         {/* garis pembatas */}
